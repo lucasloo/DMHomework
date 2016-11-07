@@ -1,4 +1,4 @@
-import fileReader.FileName;
+import fileReader.ReadFileService;
 
 import java.io.*;
 import java.util.*;
@@ -11,13 +11,13 @@ public class NounSplit {
     public Map<String, Integer> nounCount = new HashMap<>();
 
     public static void main(String args[]) {
-        FileName fileNameContainer = new FileName();
-        fileNameContainer.init("data");
+        ReadFileService readFileService = new ReadFileService();
+        readFileService.init("data");
         NounSplit nounSplitManager = new NounSplit();
-        for(String filePath : fileNameContainer.getFileNamePathStrList()){
+        for(String filePath : readFileService.getFileNamePathStrList()){
             nounSplitManager.analysisFileForNoun(filePath);
         }
-        nounSplitManager.fileWriter(nounSplitManager.sortNounCount());
+        ReadFileService.writeFile(nounSplitManager.sortNounCount());
     }
 
     public void analysisFileForNoun(String filePath){
@@ -64,17 +64,4 @@ public class NounSplit {
         return nounCountMapList;
     }
 
-    public void fileWriter(List<Map.Entry<String, Integer>> nounCountMapList){
-        FileWriter writer;
-        try {
-            writer = new FileWriter("output/output.txt");
-            for(Map.Entry<String, Integer> tmp : nounCountMapList){
-                writer.write(tmp.toString() + "\n");
-            }
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
